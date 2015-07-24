@@ -38,6 +38,25 @@ app.use(function(req, res, next){
   next();
 });
 
+// MW de auto-logout para controlar el tiempo de inactividad
+app.use(function(req, res, next){
+  // Solo si la sesión esta activa
+  if(req.session.user){
+    // Guardar la fecha/hora actual
+    var now = new Date();
+    
+    // Calcular si han transcurrido más de 2 minutos desde la transacción anterior en la sesión
+    if((now - new Date(req.session.datetimeLastTransaction)) > (2 * 60 * 1000)){
+      // destruir la sesión
+      delete req.session.user;
+    }
+
+    // Guardar la hora del reloj del sistema
+    req.session.datetimeLastTransaction = now.toUTCString();
+  }
+  next();
+});
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler

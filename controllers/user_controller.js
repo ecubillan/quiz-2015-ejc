@@ -6,7 +6,7 @@ exports.autenticar = function(login, password, callback) {
 	models.User.find({where: { username: login }}).then(function(user) {
 		if(user){
 			if(password === user.password){
-				callback(null, user.username);
+				callback(null, user);
 			} else {
 				callback(new Error('Password erróneo'));
 			}
