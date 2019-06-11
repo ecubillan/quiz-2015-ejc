@@ -16,7 +16,7 @@ exports.load = function(req, res, next, quizId) {
 };
 
 // GET /quizes/index
-exports.index = function(req, res) {
+exports.index = function(req, res, next) {
 	var search = req.query.search || "%";
 	if(search !== "%") {
 		search = "%" + search.toLowerCase().trim().replace(/\s{2,}/g, "%") + "%";
@@ -28,12 +28,12 @@ exports.index = function(req, res) {
 };
 
 // GET /quizes/:id
-exports.show = function(req, res) {
+exports.show = function(req, res, next) {
 	res.render('quizes/show', { quiz: req.quiz, errors: [] });
 };
 
 // GET /quizes/:id/answer
-exports.answer = function(req, res) {
+exports.answer = function(req, res, next) {
 	var resultado = 'Incorrecto';
 	if (req.query.respuesta.toLowerCase() === req.quiz.respuesta.toLowerCase()) {
 		resultado = 'Correcto';
@@ -42,7 +42,7 @@ exports.answer = function(req, res) {
 };
 
 // GET /quizes/new
-exports.new = function(req, res) {
+exports.new = function(req, res, next) {
 	var quiz = models.Quiz.build( // crea objeto quiz
 		{ pregunta: "Pregunta", respuesta: "Respuesta", tema: "" }
 	);
@@ -50,7 +50,7 @@ exports.new = function(req, res) {
 };
 
 // POST /quizes/create
-exports.create = function(req, res) {
+exports.create = function(req, res, next) {
 	var quiz = models.Quiz.build(req.body.quiz);
 	quiz.validate().then(function(err) {
 		if(err){
@@ -65,13 +65,13 @@ exports.create = function(req, res) {
 };
 
 // GET /quizes/:id/edit
-exports.edit = function(req, res) {
+exports.edit = function(req, res, next) {
 	var quiz = req.quiz; // Autoload de instancia de quiz
 	res.render('quizes/edit', { quiz: quiz, errors: [] });
 };
 
 // PUT /quizes/:id
-exports.update = function(req, res) {
+exports.update = function(req, res, next) {
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
 	req.quiz.tema = req.body.quiz.tema;
@@ -88,7 +88,7 @@ exports.update = function(req, res) {
 };
 
 // DELETE /quizes/:id
-exports.destroy = function(req, res) {
+exports.destroy = function(req, res, next) {
 	req.quiz.destroy().then(function(){
 		res.redirect("/quizes");
 	}).catch(function(error) { next(error); });

@@ -19,9 +19,13 @@ app.set('view engine', 'ejs');
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('3f0e1345-c648-4b7e-9db7-be49818612b2'));
-app.use(session());
+app.use(session({
+  secret: 'quiz-2015-ejc',
+  resave: false,
+  saveUninitialized: false
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
 app.use(methodOverride('_method'));

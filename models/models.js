@@ -37,9 +37,11 @@ Quiz.hasMany(Comment);
 // Importar la definicion de la tabla User en users.js
 var User = sequelize.import(path.join(__dirname, 'user'));
 
-exports.Quiz = Quiz; // exportar definición de tabla Quiz
-exports.Comment = Comment; // exportar definición de tabla Comment
-exports.User = User; // exportar definición de tabla User
+module.exports = {
+	Quiz: Quiz, // exportar definición de tabla Quiz
+	Comment: Comment, // exportar definición de tabla Comment
+	User: User // exportar definición de tabla User
+}
 
 // sequelize.sync() crea e inicializa tabla de preguntas en DB
 sequelize.sync().then(function() {
