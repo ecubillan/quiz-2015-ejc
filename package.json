@@ -10,7 +10,7 @@
     "npm": "2.1.x"
   },
   "devDependencies": {
-    "sqlite3": "^4.0.8"
+    "sqlite3": "^4.1.1"
   },
   "dependencies": {
     "body-parser": "~1.19.0",
