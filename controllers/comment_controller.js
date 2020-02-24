@@ -2,7 +2,7 @@ var models = require('../models/models.js');
 
 // Autoload - factoriza el código si ruta incluye :commentId
 exports.load = function(req, res, next, commentId) {
-	models.Comment.find({where: { id: Number(commentId)}}).then(function(comment) {
+	models.Comment.findOne({where: { id: Number(commentId)}}).then(function(comment) {
 		if (comment) {
 			req.comment = comment;
 			next();

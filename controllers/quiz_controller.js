@@ -1,8 +1,9 @@
+const { Op } = require("sequelize");
 var models = require('../models/models.js');
 
 // Autoload - factoriza el código si ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
-	models.Quiz.find({
+	models.Quiz.findOne({
 		where: { id: Number(quizId) }, 
 		include: [{ model: models.Comment }]
 		}).then(function(quiz) {
@@ -22,7 +23,17 @@ exports.index = function(req, res, next) {
 		search = "%" + search.toLowerCase().trim().replace(/\s{2,}/g, "%") + "%";
 		console.log(search);
 	}
-	models.Quiz.findAll({where: ["LOWER(pregunta) like ?", search ], order: 'pregunta ASC'}).then(function(quizes) {
+	//models.Quiz.findAll({where: ["LOWER(pregunta) like ?", search ], order: 'pregunta ASC'}).then(function(quizes) {
+	models.Quiz.findAll({ 
+		where: { 
+			pregunta: { 
+				[Op.like]: search 
+			}
+		}, 
+		order: [
+			['pregunta', 'DESC'] 
+		]
+	}).then(function(quizes) {
 		res.render('quizes/index', { quizes: quizes, errors: [] });
 	}).catch(function(error) { next(error); });
 };
